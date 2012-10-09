@@ -27,6 +27,7 @@ end
 
 class SidekiqMailerTest < Test::Unit::TestCase
   def setup
+    Sidekiq::Mailer.excluded_environments = []
     ActionMailer::Base.deliveries.clear
     Sidekiq::Mailer::Worker.jobs.clear
   end
@@ -63,6 +64,13 @@ class SidekiqMailerTest < Test::Unit::TestCase
 
   def test_realy_delivers_email_when_performing_worker_job
     Sidekiq::Mailer::Worker.new.perform('BasicMailer', 'welcome', 'test@test.com')
+    assert_equal 1, ActionMailer::Base.deliveries.size
+  end
+
+  def test_delivers_syncronously_if_running_in_a_excluded_environment
+    Sidekiq::Mailer.excluded_environments = [:test]
+    BasicMailer.welcome('test@test.com').deliver
+    assert_equal 0, Sidekiq::Mailer::Worker.jobs.size
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 end

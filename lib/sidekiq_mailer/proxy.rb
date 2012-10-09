@@ -12,7 +12,12 @@ class Sidekiq::Mailer::Proxy
   end
 
   def deliver
+    return deliver! if Sidekiq::Mailer.excludes_current_environment?
     Sidekiq::Mailer::Worker.client_push(to_sidekiq)
+  end
+
+  def excluded_environment?
+    Sidekiq::Mailer.excludes_current_environment?
   end
 
   def deliver!

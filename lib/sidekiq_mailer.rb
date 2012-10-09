@@ -4,6 +4,18 @@ require 'sidekiq_mailer/proxy'
 
 module Sidekiq
   module Mailer
+    def self.excluded_environments=(envs)
+      @@excluded_environments = [*envs].map { |e| e.to_sym }
+    end
+
+    def self.excluded_environments
+      @@excluded_environments
+    end
+
+    def self.excludes_current_environment?
+      !ActionMailer::Base.perform_deliveries || (excluded_environments && excluded_environments.include?(ENV['RAILS_ENV'].to_sym))
+    end
+
     def self.included(base)
       base.extend(ClassMethods)
       base.class_attribute :sidekiq_options_hash
