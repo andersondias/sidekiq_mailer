@@ -4,7 +4,7 @@ Sidekiq::Mailer adds to your ActionMailer classes the ability to send mails asyn
 
 ## Usage
 
-If you want to make a specific mailer to work asyncronously just include Sikekiq::Mailer module:
+If you want to make a specific mailer to work asyncronously just include Sidekiq::Mailer module:
 
     class MyMailer < ActionMailer::Base
       include Sidekiq::Mailer
