@@ -35,7 +35,7 @@ module Sidekiq
         self.sidekiq_options_hash = get_sidekiq_options.merge(stringify_keys(opts || {}))
       end
 
-      DEFAULT_OPTIONS = { 'retry' => false, 'queue' => 'mailer' }
+      DEFAULT_OPTIONS = { 'retry' => true, 'queue' => 'mailer' }
 
       def get_sidekiq_options # :nodoc:
         self.sidekiq_options_hash ||= DEFAULT_OPTIONS

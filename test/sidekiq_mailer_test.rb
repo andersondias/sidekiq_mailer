@@ -45,6 +45,12 @@ class SidekiqMailerTest < Test::Unit::TestCase
     assert_equal 'mailer', Sidekiq::Mailer::Worker.jobs.first['queue']
   end
 
+  def test_default_sidekiq_options
+    BasicMailer.welcome('test@test.com').deliver
+    assert_equal 'mailer', Sidekiq::Mailer::Worker.jobs.first['queue']
+    assert_equal true, Sidekiq::Mailer::Worker.jobs.first['retry']
+  end
+
   def test_enables_sidekiq_options_overriding
     MailerInAnotherQueue.bye('test@test.com').deliver
     assert_equal 'priority', Sidekiq::Mailer::Worker.jobs.first['queue']
