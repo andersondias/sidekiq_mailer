@@ -1,10 +1,10 @@
 # Sidekiq::Mailer
 
-Sidekiq::Mailer adds to your ActionMailer classes the ability to send mails asyncronously.
+Sidekiq::Mailer adds to your ActionMailer classes the ability to send mails asynchronously.
 
 ## Usage
 
-If you want to make a specific mailer to work asyncronously just include Sidekiq::Mailer module:
+If you want to make a specific mailer to work asynchronously just include Sidekiq::Mailer module:
 
     class MyMailer < ActionMailer::Base
       include Sidekiq::Mailer
@@ -14,9 +14,9 @@ If you want to make a specific mailer to work asyncronously just include Sidekiq
       end
     end
 
-Now every deliver you make with MyMailer will be asyncronous.
+Now every deliver you make with MyMailer will be asynchronous.
 
-    # Queues the mail to be sent asyncronously by sidekiq
+    # Queues the mail to be sent asynchronously by sidekiq
     MyMailer.welcome('your@email.com').deliver
 
 The default queue used by Sidekiq::Mailer is 'mailer'. So, in order to send mails with sidekiq you need to start a worker using:
@@ -25,7 +25,7 @@ The default queue used by Sidekiq::Mailer is 'mailer'. So, in order to send mail
 
 If you want to skip sidekiq you should use the 'deliver!' method:
 
-    # Mail will skip sidekiq and will be sent syncronously
+    # Mail will skip sidekiq and will be sent synchronously
     MyMailer.welcome('your@email.com').deliver!
 
 By default Sidekiq::Mailer will retry to send an email if it failed. But you can [override sidekiq options](https://github.com/andersondias/sidekiq_mailer/wiki/Overriding-sidekiq-options) in your mailer.

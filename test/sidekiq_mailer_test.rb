@@ -73,7 +73,7 @@ class SidekiqMailerTest < Test::Unit::TestCase
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
-  def test_delivers_syncronously_if_running_in_a_excluded_environment
+  def test_delivers_synchronously_if_running_in_a_excluded_environment
     Sidekiq::Mailer.excluded_environments = [:test]
     BasicMailer.welcome('test@test.com').deliver
     assert_equal 0, Sidekiq::Mailer::Worker.jobs.size
