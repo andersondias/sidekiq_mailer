@@ -31,7 +31,7 @@ class Sidekiq::Mailer::Proxy
   def to_sidekiq
     params = {
       'class' => Sidekiq::Mailer::Worker,
-      'args' => [@mailer_class.to_s, @method_name, *@args]
+      'args' => [@mailer_class.to_s, @method_name, @args]
     }
     params.merge(@mailer_class.get_sidekiq_options)
   end

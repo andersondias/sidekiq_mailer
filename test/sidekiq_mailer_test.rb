@@ -36,7 +36,7 @@ class SidekiqMailerTest < Test::Unit::TestCase
     BasicMailer.hi('test@test.com', 'Tester').deliver
 
     job_args = Sidekiq::Mailer::Worker.jobs.first['args']
-    expected_args = ['BasicMailer', :hi, 'test@test.com', 'Tester']
+    expected_args = ['BasicMailer', :hi, ['test@test.com', 'Tester']]
     assert_equal expected_args, job_args
   end
 
