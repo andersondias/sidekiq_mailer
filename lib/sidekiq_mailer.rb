@@ -13,7 +13,7 @@ module Sidekiq
     end
 
     def self.excludes_current_environment?
-      !ActionMailer::Base.perform_deliveries || (excluded_environments && excluded_environments.include?(ENV['RAILS_ENV'].to_sym))
+      !ActionMailer::Base.perform_deliveries || (excluded_environments && excluded_environments.include?(::Rails.env.to_sym))
     end
 
     def self.included(base)
