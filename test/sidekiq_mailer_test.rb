@@ -27,6 +27,7 @@ end
 
 class SidekiqMailerTest < Test::Unit::TestCase
   def setup
+    Sidekiq::Mailer.excluded_environments = []
     ActionMailer::Base.deliveries.clear
     Sidekiq::Mailer::Worker.jobs.clear
   end
