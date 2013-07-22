@@ -6,11 +6,17 @@ class BasicMailer < ActionMailer::Base
   default :from => "from@example.org", :subject => "Subject"
 
   def welcome(to)
-    mail(to: to)
+    mail(to: to) do |format|
+      format.text { render :text => "Hello Mikel!" }
+      format.html { render :text => "<h1>Hello Mikel!</h1>" }
+    end
   end
 
   def hi(to, name)
-    mail(to: to)
+    mail(to: to) do |format|
+      format.text { render :text => "Hello Mikel!" }
+      format.html { render :text => "<h1>Hello Mikel!</h1>" }
+    end
   end
 end
 
@@ -36,7 +42,7 @@ class SidekiqMailerTest < Test::Unit::TestCase
     BasicMailer.hi('test@test.com', 'Tester').deliver
 
     job_args = Sidekiq::Mailer::Worker.jobs.first['args']
-    expected_args = ['BasicMailer', :hi, ['test@test.com', 'Tester']]
+    expected_args = ['BasicMailer', 'hi', ['test@test.com', 'Tester']]
     assert_equal expected_args, job_args
   end
 
