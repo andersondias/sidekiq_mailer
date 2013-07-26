@@ -7,6 +7,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Asynchronous mail delivery using sidekiq}
   gem.summary       = %q{Turning ActiveMailer deliveries asynchronous using the power of sidekiq}
   gem.homepage      = "http://github.com/andersondias/sidekiq_mailer"
+  gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
