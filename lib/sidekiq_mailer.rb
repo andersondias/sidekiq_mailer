@@ -4,12 +4,13 @@ require 'sidekiq_mailer/proxy'
 
 module Sidekiq
   module Mailer
+    @@excluded_environments = nil
     def self.excluded_environments=(envs)
       @@excluded_environments = [*envs].map { |e| e && e.to_sym }
     end
 
     def self.excluded_environments
-      @@excluded_environments
+      @@excluded_environments ||= []
     end
 
     def self.current_env
