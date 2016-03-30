@@ -6,27 +6,31 @@ Sidekiq::Mailer adds to your ActionMailer classes the ability to send mails asyn
 
 If you want to make a specific mailer to work asynchronously just include Sidekiq::Mailer module:
 
-    class MyMailer < ActionMailer::Base
-      include Sidekiq::Mailer
+```ruby
+class MyMailer < ActionMailer::Base
+  include Sidekiq::Mailer
 
-      def welcome(to)
-        ...
-      end
-    end
+  def welcome(to)
+    ...
+  end
+end
+```
 
 Now every deliver you make with MyMailer will be asynchronous.
-
-    # Queues the mail to be sent asynchronously by sidekiq
-    MyMailer.welcome('your@email.com').deliver
+```ruby
+# Queues the mail to be sent asynchronously by sidekiq
+MyMailer.welcome('your@email.com').deliver
+```
 
 The default queue used by Sidekiq::Mailer is 'mailer'. So, in order to send mails with sidekiq you need to start a worker using:
 
     sidekiq -q mailer
 
 If you want to skip sidekiq you should use the 'deliver!' method:
-
-    # Mail will skip sidekiq and will be sent synchronously
-    MyMailer.welcome('your@email.com').deliver!
+```ruby
+# Mail will skip sidekiq and will be sent synchronously
+MyMailer.welcome('your@email.com').deliver!
+```
 
 By default Sidekiq::Mailer will retry to send an email if it failed. But you can [override sidekiq options](https://github.com/andersondias/sidekiq_mailer/wiki/Overriding-sidekiq-options) in your mailer.
 
@@ -47,9 +51,10 @@ Or install it yourself as:
 ## Testing
 
 Delayed e-mails is an awesome thing in production environments, but for e-mail specs/tests in testing environments it can be a mess causing specs/tests to fail because the e-mail haven't been sent directly. Therefore you can configure what environments that should be excluded like so:
-
-    # config/initializers/sidekiq_mailer.rb
-    Sidekiq::Mailer.excluded_environments = [:test, :cucumber]
+```ruby
+# config/initializers/sidekiq_mailer.rb
+Sidekiq::Mailer.excluded_environments = [:test, :cucumber]
+```
 
 ## Contributing
 
