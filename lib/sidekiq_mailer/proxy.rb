@@ -1,5 +1,5 @@
 class Sidekiq::Mailer::Proxy
-  delegate :to_s, :to => :actual_message
+  delegate :deliver!, :to => :deliver_now!
 
   def initialize(mailer_class, method_name, *args)
     @mailer_class = mailer_class
@@ -7,25 +7,23 @@ class Sidekiq::Mailer::Proxy
     *@args = *args
   end
 
-  def actual_message
-    @actual_message ||= @mailer_class.send(:new).message
-  end
-
   def deliver
-    return deliver! if Sidekiq::Mailer.excludes_current_environment?
+    return deliver_now! if Sidekiq::Mailer.excludes_current_environment?
     Sidekiq::Mailer::Worker.client_push(to_sidekiq)
   end
 
+  def deliver_now!
+    ap 'deliver_now!'
+    ap  @mailer_class
+    ap @method_name
+    ap @args
+    @mailer_class.send(@method_name, *@args).deliver_now!
+  end
+
+  private
+
   def excluded_environment?
     Sidekiq::Mailer.excludes_current_environment?
-  end
-
-  def deliver!
-    @mailer_class.send(@method_name, *@args).deliver_now
-  end
-
-  def method_missing(method_name, *args)
-    actual_message.send(method_name, *args)
   end
 
   def to_sidekiq
