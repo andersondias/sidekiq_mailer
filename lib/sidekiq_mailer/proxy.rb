@@ -8,7 +8,7 @@ class Sidekiq::Mailer::Proxy
   end
 
   def actual_message
-    @actual_message ||= @mailer_class.send(:new, @method_name, *@args).message
+    @actual_message ||= @mailer_class.send(:new).message
   end
 
   def deliver
