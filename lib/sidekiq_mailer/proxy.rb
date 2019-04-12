@@ -13,11 +13,7 @@ class Sidekiq::Mailer::Proxy
   end
 
   def deliver_now!
-    ap 'deliver_now!'
-    ap  @mailer_class
-    ap @method_name
-    ap @args
-    @mailer_class.send(@method_name, *@args).deliver_now!
+    ::ActionMailer::MessageDelivery.new(@mailer_class, @method_name, *@args).deliver_now!
   end
 
   private
