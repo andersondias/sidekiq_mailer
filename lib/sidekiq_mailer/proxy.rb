@@ -21,7 +21,7 @@ class Sidekiq::Mailer::Proxy
   end
 
   def deliver!
-    @mailer_class.public_send(@method_name, *args).deliver_now
+    @mailer_class.public_send(@method_name, *@args).deliver_now
   end
 
   def method_missing(method_name, *args)
